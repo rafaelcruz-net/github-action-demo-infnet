@@ -5,6 +5,10 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    
+env:
+  AZURE_WEBAPP_NAME: infnet-github-sample   # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.'     # set this to the path to your web app project, defaults to the repository root
 
 jobs:
   build:
@@ -21,3 +25,15 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+      
+    - name: dotnet build and publish
+      run: |
+        dotnet restore
+        dotnet build --configuration Release
+        dotnet publish -c Release -o './publish'
+
+    - uses: azure/webapps-deploy@v2
+      with:
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        app-name: 'infnet-github-sample'
+        package: './publish'
