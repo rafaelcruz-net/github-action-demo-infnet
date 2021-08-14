@@ -13,7 +13,7 @@ namespace github_action_demo_infnet
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run()
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
